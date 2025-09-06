@@ -17,6 +17,8 @@
             --warning-dark: #d35400;
             --info: #17a2b8;
             --info-dark: #148a9c;
+            --future: #9b59b6;
+            --future-dark: #8e44ad;
             --dark-text: #2c3e50;
             --light-text: #ecf0f1;
             --bg-light: #f5f7fa;
@@ -149,6 +151,10 @@
             color: var(--info);
         }
 
+        .future {
+            color: var(--future);
+        }
+
         .sections {
             display: grid;
             grid-template-columns: 1fr;
@@ -241,6 +247,14 @@
             background-color: var(--info-dark);
         }
 
+        .btn-future {
+            background-color: var(--future);
+        }
+
+        .btn-future:hover {
+            background-color: var(--future-dark);
+        }
+
         .transactions {
             margin-top: 20px;
             max-height: 300px;
@@ -297,6 +311,7 @@
             display: flex;
             margin-bottom: 20px;
             border-bottom: 1px solid var(--border-light);
+            flex-wrap: wrap;
         }
 
         body.dark-mode .tabs {
@@ -394,6 +409,11 @@
 
         .badge-danger {
             background-color: var(--danger);
+            color: white;
+        }
+
+        .badge-future {
+            background-color: var(--future);
             color: white;
         }
 
@@ -554,6 +574,11 @@
         .login-title {
             text-align: center;
             margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        body.dark-mode .login-title {
+            color: var(--light-text);
         }
 
         .login-options {
@@ -590,6 +615,78 @@
             margin-top: 10px;
             font-size: 0.9rem;
             display: none;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+
+        .status-pending {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .status-completed {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .future-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid var(--border-light);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        body.dark-mode .toggle-option {
+            border: 1px solid var(--border-dark);
+        }
+
+        .toggle-option.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .future-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .future-summary-item {
+            background-color: rgba(155, 89, 182, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        body.dark-mode .future-summary-item {
+            background-color: rgba(155, 89, 182, 0.2);
+        }
+
+        .future-summary-title {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+
+        .future-summary-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--future);
         }
     </style>
 </head>
@@ -695,40 +792,51 @@
             </div>
         </div>
 
-        <div class="sections">
-            <div class="left-section">
-                <div class="section">
-                    <h2 class="section-title">Transações Financeiras</h2>
-                    <div class="card">
-                        <form id="transacao-form">
-                            <div class="form-group">
-                                <label for="descricao">Descrição</label>
-                                <input type="text" id="descricao" placeholder="Ex: Salário, Aluguel, Supermercado" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="valor">Valor</label>
-                                <input type="number" id="valor" step="0.01" min="0.01" placeholder="0,00" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="categoria">Categoria</label>
-                                <select id="categoria" required>
-                                    <option value="">Selecione uma categoria</option>
-                                    <option value="receita">Receita</option>
-                                    <option value="despesa">Despesa</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="data">Data</label>
-                                <input type="date" id="data" required>
-                            </div>
-                            
-                            <button type="submit">Adicionar Transação</button>
-                        </form>
-                    </div>
+        <div class="tabs">
+            <div class="tab active" data-tab="transacoes">Transações</div>
+            <div class="tab" data-tab="investimentos">Investimentos</div>
+            <div class="tab" data-tab="cartao">Cartão de Crédito</div>
+            <div class="tab" data-tab="futuro">Planejamento Futuro</div>
+        </div>
 
+        <div class="tab-content active" id="transacoes-tab">
+            <div class="sections">
+                <div class="left-section">
+                    <div class="section">
+                        <h2 class="section-title">Transações Financeiras</h2>
+                        <div class="card">
+                            <form id="transacao-form">
+                                <div class="form-group">
+                                    <label for="descricao">Descrição</label>
+                                    <input type="text" id="descricao" placeholder="Ex: Salário, Aluguel, Supermercado" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="valor">Valor</label>
+                                    <input type="number" id="valor" step="0.01" min="0.01" placeholder="0,00" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="categoria">Categoria</label>
+                                    <select id="categoria" required>
+                                        <option value="">Selecione uma categoria</option>
+                                        <option value="receita">Receita</option>
+                                        <option value="despesa">Despesa</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="data">Data</label>
+                                    <input type="date" id="data" required>
+                                </div>
+                                
+                                <button type="submit">Adicionar Transação</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-section">
                     <div class="card">
                         <h3>Transações do Ciclo</h3>
                         <div class="transactions" id="transacoes-list">
@@ -737,51 +845,40 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="right-section">
-                <div class="tabs">
-                    <div class="tab active" data-tab="investimentos">Investimentos</div>
-                    <div class="tab" data-tab="cartao">Cartão de Crédito</div>
+        <div class="tab-content" id="investimentos-tab">
+            <div class="sections">
+                <div class="left-section">
+                    <div class="section">
+                        <h2 class="section-title">Controle de Investimentos</h2>
+                        <div class="card">
+                            <form id="investimento-form">
+                                <div class="form-group">
+                                    <label for="tipo-operacao">Tipo de Operação</label>
+                                    <select id="tipo-operacao" required>
+                                        <option value="aplicacao">Aplicação</option>
+                                        <option value="resgate">Resgate</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="valor-investimento">Valor</label>
+                                    <input type="number" id="valor-investimento" step="0.01" min="0.01" placeholder="0,00" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="data-investimento">Data</label>
+                                    <input type="date" id="data-investimento" required>
+                                </div>
+                                
+                                <button type="submit" class="btn-success">Registrar Operação</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="tab-content active" id="investimentos-tab">
-                    <div class="card">
-                        <h3>Controle de Investimentos</h3>
-                        
-                        <div class="summary-cards">
-                            <div class="summary-card">
-                                <div class="summary-title">Total Aplicado</div>
-                                <div class="summary-value neutral" id="total-aplicado">R$ 0,00</div>
-                            </div>
-                            <div class="summary-card">
-                                <div class="summary-title">Total Retirado</div>
-                                <div class="summary-value" id="total-retirado">R$ 0,00</div>
-                            </div>
-                        </div>
-                        
-                        <form id="investimento-form">
-                            <div class="form-group">
-                                <label for="tipo-operacao">Tipo de Operação</label>
-                                <select id="tipo-operacao" required>
-                                    <option value="aplicacao">Aplicação</option>
-                                    <option value="resgate">Resgate</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="valor-investimento">Valor</label>
-                                <input type="number" id="valor-investimento" step="0.01" min="0.01" placeholder="0,00" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="data-investimento">Data</label>
-                                <input type="date" id="data-investimento" required>
-                            </div>
-                            
-                            <button type="submit" class="btn-success">Registrar Operação</button>
-                        </form>
-                    </div>
-
+                <div class="right-section">
                     <div class="card">
                         <h3>Histórico de Investimentos</h3>
                         <div class="transactions" id="investimentos-list">
@@ -789,56 +886,126 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="tab-content" id="cartao-tab">
-                    <div class="card">
-                        <h3>Controle de Cartão de Crédito</h3>
-                        
-                        <div class="credit-info">
-                            <div>
-                                <div class="summary-title">Limite Total</div>
-                                <div class="summary-value" id="limite-total">R$ 0,00</div>
+        <div class="tab-content" id="cartao-tab">
+            <div class="sections">
+                <div class="left-section">
+                    <div class="section">
+                        <h2 class="section-title">Controle de Cartão de Crédito</h2>
+                        <div class="card">
+                            <div class="credit-info">
+                                <div>
+                                    <div class="summary-title">Limite Total</div>
+                                    <div class="summary-value" id="limite-total">R$ 0,00</div>
+                                </div>
+                                <div>
+                                    <div class="summary-title">Disponível</div>
+                                    <div class="summary-value" id="disponivel">R$ 0,00</div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="summary-title">Disponível</div>
-                                <div class="summary-value" id="disponivel">R$ 0,00</div>
-                            </div>
+                            
+                            <form id="limite-form">
+                                <div class="form-group">
+                                    <label for="novo-limite">Definir Limite do Cartão</label>
+                                    <input type="number" id="novo-limite" step="0.01" min="0.01" placeholder="0,00" required>
+                                </div>
+                                <button type="submit" class="btn-success">Definir Limite</button>
+                            </form>
+                            
+                            <hr style="margin: 20px 0;">
+                            
+                            <form id="compra-form">
+                                <div class="form-group">
+                                    <label for="descricao-compra">Descrição da Compra</label>
+                                    <input type="text" id="descricao-compra" placeholder="Ex: Restaurante, Compras Online" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="valor-compra">Valor</label>
+                                    <input type="number" id="valor-compra" step="0.01" min="0.01" placeholder="0,00" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="data-compra">Data</label>
+                                    <input type="date" id="data-compra" required>
+                                </div>
+                                
+                                <button type="submit" class="btn-warning">Registrar Compra</button>
+                            </form>
                         </div>
-                        
-                        <form id="limite-form">
-                            <div class="form-group">
-                                <label for="novo-limite">Definir Limite do Cartão</label>
-                                <input type="number" id="novo-limite" step="0.01" min="0.01" placeholder="0,00" required>
-                            </div>
-                            <button type="submit" class="btn-success">Definir Limite</button>
-                        </form>
-                        
-                        <hr style="margin: 20px 0;">
-                        
-                        <form id="compra-form">
-                            <div class="form-group">
-                                <label for="descricao-compra">Descrição da Compra</label>
-                                <input type="text" id="descricao-compra" placeholder="Ex: Restaurante, Compras Online" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="valor-compra">Valor</label>
-                                <input type="number" id="valor-compra" step="0.01" min="0.01" placeholder="0,00" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="data-compra">Data</label>
-                                <input type="date" id="data-compra" required>
-                            </div>
-                            
-                            <button type="submit" class="btn-warning">Registrar Compra</button>
-                        </form>
                     </div>
+                </div>
 
+                <div class="right-section">
                     <div class="card">
                         <h3>Compras no Cartão</h3>
                         <div class="transactions" id="compras-list">
                             <div class="empty-message">Nenhuma compra registrada</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="futuro-tab">
+            <div class="sections">
+                <div class="left-section">
+                    <div class="section">
+                        <h2 class="section-title">Planejamento Futuro</h2>
+                        <div class="card">
+                            <div class="future-toggle">
+                                <div class="toggle-option active" data-type="despesa">Despesa Futura</div>
+                                <div class="toggle-option" data-type="receita">Receita Futura</div>
+                            </div>
+                            
+                            <form id="futuro-form">
+                                <div class="form-group">
+                                    <label for="descricao-futuro">Descrição</label>
+                                    <input type="text" id="descricao-futuro" placeholder="Ex: Presente aniversário, Bônus salarial" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="valor-futuro">Valor</label>
+                                    <input type="number" id="valor-futuro" step="0.01" min="0.01" placeholder="0,00" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="data-futuro">Data Prevista</label>
+                                    <input type="date" id="data-futuro" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="status-futuro">Status</label>
+                                    <select id="status-futuro">
+                                        <option value="pendente">Pendente</option>
+                                        <option value="confirmado">Confirmado</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="submit" class="btn-future">Adicionar Planejamento</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-section">
+                    <div class="future-summary">
+                        <div class="future-summary-item">
+                            <div class="future-summary-title">Receitas Futuras</div>
+                            <div class="future-summary-value" id="total-receitas-futuras">R$ 0,00</div>
+                        </div>
+                        <div class="future-summary-item">
+                            <div class="future-summary-title">Despesas Futuras</div>
+                            <div class="future-summary-value" id="total-despesas-futuras">R$ 0,00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Previsões Futuras</h3>
+                        <div class="transactions" id="futuro-list">
+                            <div class="empty-message">Nenhum planejamento futuro</div>
                         </div>
                     </div>
                 </div>
@@ -908,7 +1075,8 @@
             creditCard: {
                 limit: 0,
                 purchases: []
-            }
+            },
+            future: []
         };
 
         // Símbolos de moeda
@@ -937,6 +1105,7 @@
                 document.getElementById('data').value = today;
                 document.getElementById('data-investimento').value = today;
                 document.getElementById('data-compra').value = today;
+                document.getElementById('data-futuro').value = today;
                 document.getElementById('cycle-start-date').value = userData.cycleStart;
                 document.getElementById('cycle-end-date').value = userData.cycleEnd;
                 
@@ -955,6 +1124,7 @@
             document.getElementById('investimento-form').addEventListener('submit', handleInvestmentOperation);
             document.getElementById('limite-form').addEventListener('submit', handleSetCreditLimit);
             document.getElementById('compra-form').addEventListener('submit', handleCreditPurchase);
+            document.getElementById('futuro-form').addEventListener('submit', handleFuturePlanning);
             document.getElementById('profile-btn').addEventListener('click', showProfileModal);
             document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
             document.getElementById('change-cycle-btn').addEventListener('click', showCycleModal);
@@ -996,6 +1166,14 @@
                     }
                 });
             });
+            
+            // Event listener para toggle de tipo futuro
+            document.querySelectorAll('.toggle-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.toggle-option').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
         });
         
         function handleLogin() {
@@ -1028,6 +1206,7 @@
             document.getElementById('data').value = today;
             document.getElementById('data-investimento').value = today;
             document.getElementById('data-compra').value = today;
+            document.getElementById('data-futuro').value = today;
         }
         
         function showApp() {
@@ -1078,6 +1257,7 @@
             loadTransactions();
             loadInvestments();
             loadCreditCard();
+            loadFuturePlanning();
             updateTotals();
         }
         
@@ -1237,6 +1417,7 @@
             updateBalance();
             updateInvestments();
             updateCreditCard();
+            updateFuturePlanning();
         }
         
         function updateBalance() {
@@ -1473,6 +1654,104 @@
         
         function updateInvestments() {
             updateInvestmentsTotal();
+        }
+        
+        // Implementações para planejamento futuro
+        function handleFuturePlanning(e) {
+            e.preventDefault();
+            const description = document.getElementById('descricao-futuro').value;
+            const amount = parseFloat(document.getElementById('valor-futuro').value);
+            const date = document.getElementById('data-futuro').value;
+            const status = document.getElementById('status-futuro').value;
+            
+            // Obter o tipo selecionado (despesa ou receita)
+            const type = document.querySelector('.toggle-option.active').getAttribute('data-type');
+            
+            if (!description || isNaN(amount) || amount <= 0 || !date) {
+                alert('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+            
+            const futureItem = {
+                id: Date.now(),
+                description,
+                amount,
+                type,
+                date,
+                status
+            };
+            
+            financialData.future.push(futureItem);
+            saveFinancialData();
+            loadFuturePlanning();
+            updateFuturePlanning();
+            
+            document.getElementById('futuro-form').reset();
+            document.getElementById('data-futuro').value = new Date().toISOString().split('T')[0];
+        }
+        
+        function loadFuturePlanning() {
+            const futureList = document.getElementById('futuro-list');
+            
+            if (financialData.future.length === 0) {
+                futureList.innerHTML = '<div class="empty-message">Nenhum planejamento futuro</div>';
+                return;
+            }
+            
+            // Ordenar por data (mais próxima primeiro)
+            financialData.future.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            futureList.innerHTML = '';
+            financialData.future.forEach(item => {
+                const futureElement = document.createElement('div');
+                futureElement.classList.add('transaction-item');
+                
+                const amountFormatted = formatCurrency(item.amount);
+                const dateFormatted = formatDate(item.date);
+                const statusClass = item.status === 'pendente' ? 'status-pending' : 'status-completed';
+                
+                futureElement.innerHTML = `
+                    <div class="transaction-desc">
+                        <strong>${item.description}</strong>
+                        <div>${dateFormatted} <span class="status-badge ${statusClass}">${item.status === 'pendente' ? 'Pendente' : 'Confirmado'}</span></div>
+                    </div>
+                    <div class="transaction-value ${item.type}">
+                        ${item.type === 'receita' ? '+' : '-'} ${amountFormatted}
+                    </div>
+                    <div class="transaction-actions">
+                        <button class="action-btn btn-danger" onclick="deleteFutureItem(${item.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                futureList.appendChild(futureElement);
+            });
+        }
+        
+        function deleteFutureItem(id) {
+            if (confirm('Tem certeza que deseja excluir este planejamento?')) {
+                financialData.future = financialData.future.filter(f => f.id !== id);
+                saveFinancialData();
+                loadFuturePlanning();
+                updateFuturePlanning();
+            }
+        }
+        
+        function updateFuturePlanning() {
+            let totalReceitas = 0;
+            let totalDespesas = 0;
+            
+            financialData.future.forEach(item => {
+                if (item.type === 'receita') {
+                    totalReceitas += item.amount;
+                } else {
+                    totalDespesas += item.amount;
+                }
+            });
+            
+            document.getElementById('total-receitas-futuras').textContent = formatCurrency(totalReceitas);
+            document.getElementById('total-despesas-futuras').textContent = formatCurrency(totalDespesas);
         }
         
         // Inicializar tema salvo
